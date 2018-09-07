@@ -15,7 +15,7 @@ Other cases have **better long-term solutions**:
 
 The main motivation for `create-subscription` is to provide a way for library authors to ensure compatibility with React's upcoming asynchronous rendering mode. `create-subscription` guarantees correctness in async mode, accounting for the subtle bugs and edge cases that a library author might otherwise miss.
 
-However, it achieves correctness by sometimes de-opting to synchronous mode, obviating the benefits of async rendering. This is an inherent limitation of storing state outside of React's managed state queue and rendering in response to a change event.
+However, [it achieves correctness by sometimes de-opting to synchronous mode](https://github.com/facebook/react/issues/13186#issuecomment-403959161), obviating the benefits of async rendering. This is an inherent limitation of storing state outside of React's managed state queue and rendering in response to a change event.
 
 The effect of de-opting to sync mode is that the main thread may periodically be blocked (in the case of CPU-bound work), and placeholders may appear earlier than desired (in the case of IO-bound work).
 
@@ -145,7 +145,7 @@ const ReplaySubscription = createSubscription({
 
 Below is an example showing how `create-subscription` can be used with native Promises.
 
-**Note** that it an initial render value of `undefined` is unavoidable due to the fact that Promises provide no way to synchronously read their current value.
+**Note** that an initial render value of `undefined` is unavoidable due to the fact that Promises provide no way to synchronously read their current value.
 
 **Note** the lack of a way to "unsubscribe" from a Promise can result in memory leaks as long as something has a reference to the Promise. This should be taken into consideration when determining whether Promises are appropriate to use in this way within your application.
 
